@@ -1,0 +1,45 @@
+<!Doctype html>
+<html>
+<body>
+<h2>Guessing Game!!!?</h2>
+<form id = "myForm">
+<input id = "num">
+
+<button type = "button" onclick = "validateForm()">Check On!</button>
+<input type = "reset">
+</form>
+<p id="demo"></p>
+<script>
+
+var y = Math.floor((Math.random() * 100) + 0);
+	
+function validateForm()
+{
+	
+	var x = document.getElementById("num").value;
+	if(x < y)
+	{
+		var text = document.getElementById("demo").innerHTML = "Number is low";
+	}
+	else if(x > y)
+	{
+		var text = document.getElementById("demo").innerHTML = "Number is high";	}
+	else
+	{
+		var text = document.getElementById("demo").innerHTML = "Your guess is correct";
+	}
+}
+
+document.getElementById("myForm").addEventListener("reset" , myReset);
+
+function myReset()
+{
+	// write code to set y as a random whole num from 0 - 100
+	/*var y = */
+	/*y.innerHTML*/ y = Math.floor((Math.random() * 100) + 0);
+	document.getElementById("demo").innerHTML = y;
+}
+
+</script>
+</body>
+</html>
