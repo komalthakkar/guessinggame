@@ -5,25 +5,33 @@
 <form id = "myForm">
 <input id = "num">
 
-<button type = "button" onclick = "validateForm()">Check On!</button>
+<button type = "button" onclick = "validateForm()" class="dropbtn">Check On!</button>
 <input type = "reset">
 </form>
+
 <p id="demo"></p>
+<p id="numbers"></p>
+
 <script>
 
 var y = Math.floor((Math.random() * 100) + 0);
+var a = 0, b = 100;
+
+function validateForm() {
 	
-function validateForm()
-{
-	
-	var x = document.getElementById("num").value;
+	var x = Number(document.getElementById("num").value);
 	if(x < y)
 	{
 		var text = document.getElementById("demo").innerHTML = "Number is low";
+		a=x;
+	  showPossibleGuesses();
 	}
 	else if(x > y)
 	{
-		var text = document.getElementById("demo").innerHTML = "Number is high";	}
+		var text = document.getElementById("demo").innerHTML = "Number is high";	
+		b=x;
+		showPossibleGuesses();
+		}
 	else
 	{
 		var text = document.getElementById("demo").innerHTML = "Your guess is correct";
@@ -31,6 +39,15 @@ function validateForm()
 }
 
 document.getElementById("myForm").addEventListener("reset" , myReset);
+
+function showPossibleGuesses () {
+	var html = "";
+	for (var i = a; i  < b; i++) {
+		html += i + ", ";
+	}
+
+	document.getElementById("numbers").innerHTML = html
+}
 
 function myReset()
 {
@@ -40,6 +57,7 @@ function myReset()
 	document.getElementById("demo").innerHTML = y;
 }
 
+showPossibleGuesses()
 </script>
 </body>
 </html>
