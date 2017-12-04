@@ -1,128 +1,128 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  
+  AppRegistry,
   StyleSheet,
-  FlatList,
-  //Button,
-  View,
   Text,
-  TextInput,
-  Alert,
-  Button,
-  CheckBox
-  //Vibration
+  View,
+  PixelRatio,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
-import Icon from  'react-native-vector-icons/MaterialIcons';
-// import ListViewItem from './ListViewItem';
 
+import ImagePicker from 'react-native-image-picker';
 
+export default class App extends React.Component {
 
-export default class FlexDirectionBasics extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      text: '' ,
-      data: [
-        {key: 'Morning-Walk'},
-        {key: 'Yoga'},
-        // {key: 'Prepare Breakfast and Lunch'},
-        {key: 'Office'},
-        {key: 'Check e-mails'}
-      ]
+  state = {
+    avatarSource: null,
+    videoSource: null
+  };
+
+  selectPhotoTapped() {
+    const options = {
+      quality: 1.0,
+      maxWidth: 500,
+      maxHeight: 500,
+      storageOptions: {
+        skipBackup: true
+      }
     };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled photo picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      }
+      else {
+        let source = { uri: response.uri };
+
+        // You can also display the image using data:
+        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        this.setState({
+          avatarSource: source
+        });
+      }
+    });
   }
+
+  selectVideoTapped() {
+    const options = {
+      title: 'Video Picker',
+      takePhotoButtonTitle: 'Take Video...',
+      mediaType: 'video',
+      videoQuality: 'medium'
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled video picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      }
+      else {
+        this.setState({
+          videoSource: response.uri
+        });
+      }
+    });
+  }
+
   render() {
-    let iconName= this.state.data.completed ? 'check-box' : 'check-box-outline-blank';
-    let color = this.props.color || '#000';
-
-    // const b=[
-    //   <Icon.Button
-    //   data={this.state.data}
-    //   name={iconName}
-    //   backgroundColor='rgba(0,0,0,0)'
-    //   color={color}
-    //   underlayColor='rgba(0,0,0,0)'
-    //   size={20}
-    //   iconStyle={{marginLeft: -10, marginRight: 0}}
-    //   activeOpacity={1}
-    //   borderRadius={5}
-    //   onPress={this.props.onCheckBoxPressed}
-    // >
-    //  </Icon.Button>
-    // ]
-
-    
-
     return (
-      // Try setting `flexDirection` to `column`.
-      
-      <View style={{flex: 1, flexDirection: 'column', justifyContent:'center' }}>
-         <View style={{padding: 10}}>
-          <TextInput
-            style={{height: 40, marginBottom:-100}}
-            placeholder="Add To-Do!!!"
-            onChangeText={(text) => this.setState({text})}
-          />
-          <Text style={{padding: 10, fontSize: 42}}>
-            {this.state.text.split(' ').map((word) => word && '').join(' ')}
-          </Text>
+      <View style={styles.container}>
+        <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+          <View style={[styles.avatar, styles.avatarContainer, {marginBottom: 20}]}>
+          { this.state.avatarSource === null ? <Text>Select a Photo</Text> :
+            <Image style={styles.avatar} source={this.state.avatarSource} />
+          }
           </View>
+        </TouchableOpacity>
 
-          <View style={styles.container}>
-            
-            <FlatList
-            
-              data= {this.state.data}
-              //bd={b}
-              renderItem={({item}) => {
-                return <Text style={styles.item}>{item.key}</Text>
-              }}
-            />
-
-
-            
-
+        <TouchableOpacity onPress={this.selectVideoTapped.bind(this)}>
+          <View style={[styles.avatar, styles.avatarContainer]}>
+            <Text>Select a Video</Text>
           </View>
-        
-          <Button
-            onPress={() => { 
-              Alert.alert('Task! has been added to your list')}
-              // add a new note
-              
-              var cd = {key : this.state.text}
-              var ab = this.state.data
-              ab.push(cd) = this.setState + 1
-            }
-            title="Add"
-            
-          />
+        </TouchableOpacity>
 
+        { this.state.videoSource &&
+          <Text style={{margin: 8, textAlign: 'center'}}>{this.state.videoSource}</Text>
+        }
       </View>
     );
   }
-};
 
+}
 
-
-module.exports = FlexDirectionBasics;
-
-     const styles=StyleSheet.create({
-       container: {
-         flex:1,
-         paddingTop: 22
-
-       },
-
-       item: {
-         padding:10,
-         fontSize:18,
-         height:44
-       },
-     })
-     
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF'
+  },
+  avatarContainer: {
+    borderColor: '#9B9B9B',
+    borderWidth: 1 / PixelRatio.get(),
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  avatar: {
+    borderRadius: 75,
+    width: 150,
+    height: 150
+  }
+});

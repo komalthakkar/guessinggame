@@ -58,4 +58,11 @@ const styles = StyleSheet.create({
 
         
 
-     
+     <Button
+        onPress={() => { Alert.alert('You tapped the button!')}}
+         var cd =  { key : this.state.text };
+                    var ab = this.state.data;
+                    ab.push(cd)
+                    this.setState({ data: ab })
+        title="Press Me"
+     />
